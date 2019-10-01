@@ -118,7 +118,7 @@ const sendData = (img,error) => {
   });
 
 };
-  
+
 
 
 pause.onclick = pauseStream;
