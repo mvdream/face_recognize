@@ -9,7 +9,7 @@ const buttons = [...controls.querySelectorAll('button')];
 let streamStarted = false;
 let intervalId;
 
-const [play, pause,stop, screenshot] = buttons;
+const [play, pause,stop] = buttons;
 
 const constraints = {
   video: {
@@ -68,10 +68,16 @@ play.onclick = () => {
   
 };
 const stopStream = () => {
-  video.stop();
+  stream = window.stream
+  tracks = stream.getTracks()
+  tracks.forEach(function(track) {
+    track.stop();
+  });
   clearInterval(intervalId)
+  video.srcObject = null
   play.classList.remove('d-none');
   stop.classList.add('d-none');
+  pause.classList.add('d-none');
 };
 const pauseStream = () => {
   video.pause();
@@ -136,7 +142,8 @@ const handleStream = (stream) => {
   video.srcObject = stream;
   play.classList.add('d-none');
   pause.classList.remove('d-none');
-  screenshot.classList.remove('d-none');
+  stop.classList.remove('d-none');
+  // screenshot.classList.remove('d-none');
 };
 
 

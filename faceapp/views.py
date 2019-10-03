@@ -16,7 +16,7 @@ class FaceRecognize(View):
 
     def post(self,request):
         img = request.POST.get('image')
-        print(img)
+        # print(img)
         output_data = {'students':[],'status':'Successfully recognize students','error':False}
         response_data = []        
         if len(img)<10:
