@@ -6,9 +6,9 @@ from django.views.decorators.csrf import csrf_exempt
 # from django.conf.urls.static import static
 
 urlpatterns = [
-    # path('facedetect/',FaceRecognize.as_view(), name='detect'),
-    # path('video/',views.livefe, name='detect'),
-    path('video/',Home.as_view(), name='home'),
-    path('image/',csrf_exempt(FaceRecognize.as_view()), name='detect'),
+    path('',Home.as_view(), name='home'),
+    path('add/',AddStudent.as_view(), name='add'),
+    path('scan/',ScanPeople.as_view(), name='scan'),
+    path('scan/recognize/',csrf_exempt(FaceRecognize.as_view()), name='recognize'),
 
 ]

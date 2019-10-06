@@ -9,7 +9,7 @@ const buttons = [...controls.querySelectorAll('button')];
 let streamStarted = false;
 let intervalId;
 
-const [play, pause,stop] = buttons;
+const [play, pause,stop,screenshot] = buttons;
 
 const constraints = {
   video: {
@@ -43,17 +43,30 @@ const doScreenshot = () => {
     canvas.height = video.videoHeight;
     canvas.getContext('2d').drawImage(video, 0, 0);
     screenshotImage.src = canvas.toDataURL('image/webp');
-    sendData(screenshotImage.src)
+    screenshotImage.classList.remove('d-none');
+  }
+};
+const recognize = () => {
+  // console.log(status)
+  if (true){
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    canvas.getContext('2d').drawImage(video, 0, 0);
+    img = canvas.toDataURL('image/webp');
+    recognizePeople(img)
     screenshotImage.classList.remove('d-none');
   }
 };
 play.onclick = () => {
-  intervalId = setInterval(doScreenshot,1000)
+  if (window.location.href.includes("scan")){
+    intervalId = setInterval(recognize,1000)
+  }
   if (streamStarted) {
     video.play();
     play.classList.add('d-none');
     pause.classList.remove('d-none');
     stop.classList.remove('d-none');
+    screenshotImage.classList.remove('d-none');
     return;
   }
   if ('mediaDevices' in navigator && navigator.mediaDevices.getUserMedia) {
@@ -78,6 +91,7 @@ const stopStream = () => {
   play.classList.remove('d-none');
   stop.classList.add('d-none');
   pause.classList.add('d-none');
+  screenshot.classList.add('d-none');
 };
 const pauseStream = () => {
   video.pause();
@@ -100,12 +114,11 @@ function getCookie(name) {
   }
   return cookieValue;
 }
-const sendData = (img,error) => {
-  console.log(img);
+const recognizePeople = (img,error) => {
   var csrftoken = getCookie('csrftoken');
   $.ajax({
     type: "POST",
-    url: "/scan/image/",
+    url: "recognize/",
     data: {
         "csrfmiddlewaretoken" : csrftoken,
         "image": img,
@@ -129,7 +142,7 @@ const sendData = (img,error) => {
 
 pause.onclick = pauseStream;
 stop.onclick = stopStream;
-// screenshot.onclick = doScreenshot;
+screenshot.onclick = doScreenshot;
 
 const startStream = async (constraints) => {
   const stream = await navigator.mediaDevices.getUserMedia(constraints);
@@ -143,7 +156,7 @@ const handleStream = (stream) => {
   play.classList.add('d-none');
   pause.classList.remove('d-none');
   stop.classList.remove('d-none');
-  // screenshot.classList.remove('d-none');
+  screenshot.classList.remove('d-none');
 };
 
 

@@ -11,7 +11,9 @@ from django.views.decorators import gzip
 class Home(View):
     def get(self,request):
         return render(request,"faceapp/index.html")
-
+class ScanPeople(View):
+    def get(self,request):
+        return render(request,"faceapp/scan_people.html")
 class FaceRecognize(View):
 
     def post(self,request):
@@ -43,6 +45,8 @@ class FaceRecognize(View):
 
 class AddStudent(View):
 
+    def get(self,request):
+        return render(request,"faceapp/add_people.html")
     def post(self,request):
         encode_img = request.POST.get('image')
         name = request.POST.get('name')
